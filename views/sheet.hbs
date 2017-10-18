@@ -5,12 +5,15 @@
     <title>Some Website</title>
   </head>
   <body>
+
+    {{>header}}
+
     <form action="/sheet/fetch" method="post">
+      Spreadsheet key: <input type="text" name="sheetkey"><br>
+      <br>
       Sheet id: <input type="text" name="sheetid"><br>
-      Range: <input type="text" name="range"><br>
       <input type="submit" value="Submit">
     </form>
-
     {{>footer}}
   </body>
 </html>
