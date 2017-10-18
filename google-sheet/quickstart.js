@@ -107,7 +107,7 @@ function listMajors(auth , callback) {
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.get({
     auth: auth,
-    spreadsheetId: '13y6lXxHwZw8h6CRr7-UmcCI4ihbw1syUFzaw9CnxUtM',
+    spreadsheetId: '1fGXXRC4rc-vajMyfuB1omK47a_mDfy3hfptqiApiM78',
     range: 'Technical!A1:B',
   }, function(err, response) {
     if (err) {
