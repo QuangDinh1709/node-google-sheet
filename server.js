@@ -55,10 +55,19 @@ app.post('/sheet/fetch', (req, res) => {
     });
     req.on('end', function () {
       POST = querystring.parse(body);
+      console.log(POST);
     });
-    console.log(POST);
-    googleapis.readSheet();
-    res.send('Hello');
+
+    googleapis.readSheet((rowData) => {
+      // for (var i = 0; i < rowData.length; i++) {
+      //   var rowColum = rowData[i];
+      //   // Print columns A and E, which correspond to indices 0 and 4.
+      //   console.log('%s', rowColum[1]);
+        res.send(rowData);
+      //}
+    });
+    //var rows = googleapis.getData();
+    //res.send('Hello');
 
 });
 

@@ -12,7 +12,7 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
 var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart.json';
 // console.log('TOKEN_PATH ******* ',TOKEN_PATH);
 // Load client secrets from a local file.
-function readSheet () {
+function readSheet (callBack) {
   fs.readFile('client_secret.json', function processClientSecrets(err, content) {
     if (err) {
       console.log('Error loading client secret file: ' + err);
@@ -20,7 +20,7 @@ function readSheet () {
     }
     // Authorize a client with the loaded credentials, then call the
     // Google Sheets API.
-    authorize(JSON.parse(content), listMajors);
+     authorize(JSON.parse(content), listMajors, callBack);
   });
 };
 
@@ -32,7 +32,7 @@ function readSheet () {
  * @param {function} callback The callback to call with the authorized client.
  */
 
- function authorize(credentials, callback) {
+ function authorize(credentials, callback, callBackSetData) {
   var clientSecret = credentials.installed.client_secret;
   var clientId = credentials.installed.client_id;
   var redirectUrl = credentials.installed.redirect_uris[0];
@@ -45,7 +45,7 @@ function readSheet () {
       getNewToken(oauth2Client, callback);
     } else {
       oauth2Client.credentials = JSON.parse(token);
-      callback(oauth2Client);
+      callback(oauth2Client, callBackSetData);
     }
   });
 }
@@ -103,7 +103,7 @@ function storeToken(token) {
  * Print the names and majors of students in a sample spreadsheet:
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
-function listMajors(auth) {
+function listMajors(auth , callback) {
   var sheets = google.sheets('v4');
   sheets.spreadsheets.values.get({
     auth: auth,
@@ -119,15 +119,16 @@ function listMajors(auth) {
       console.log('No data found.');
     } else {
       console.log('Name, Major:');
-      for (var i = 0; i < rows.length; i++) {
-        var row = rows[i];
-        // Print columns A and E, which correspond to indices 0 and 4.
-        console.log('%s', row[1]);
-      }
+      callback(rows);
+      // for (var i = 0; i < rows.length; i++) {
+      //   var row = rows[i];
+      //   // Print columns A and E, which correspond to indices 0 and 4.
+      //   console.log('%s', row[1]);
+      // }
     }
   });
 }
 
 module.exports = {
-  readSheet : readSheet
+  readSheet : readSheet,
 };
