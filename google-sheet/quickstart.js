@@ -12,15 +12,17 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
 var TOKEN_PATH = TOKEN_DIR + 'sheets.googleapis.com-nodejs-quickstart.json';
 // console.log('TOKEN_PATH ******* ',TOKEN_PATH);
 // Load client secrets from a local file.
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
-  if (err) {
-    console.log('Error loading client secret file: ' + err);
-    return;
-  }
-  // Authorize a client with the loaded credentials, then call the
-  // Google Sheets API.
-  authorize(JSON.parse(content), listMajors);
-});
+function readSheet () {
+  fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+    if (err) {
+      console.log('Error loading client secret file: ' + err);
+      return;
+    }
+    // Authorize a client with the loaded credentials, then call the
+    // Google Sheets API.
+    authorize(JSON.parse(content), listMajors);
+  });
+};
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -106,7 +108,7 @@ function listMajors(auth) {
   sheets.spreadsheets.values.get({
     auth: auth,
     spreadsheetId: '13y6lXxHwZw8h6CRr7-UmcCI4ihbw1syUFzaw9CnxUtM',
-    range: 'Technical!A1:D',
+    range: 'Technical!A1:B',
   }, function(err, response) {
     if (err) {
       console.log('The API returned an error: ' + err);
@@ -120,8 +122,12 @@ function listMajors(auth) {
       for (var i = 0; i < rows.length; i++) {
         var row = rows[i];
         // Print columns A and E, which correspond to indices 0 and 4.
-        console.log('%s, %s , %s, %s', row[0],row[1],row[2],row[3]);
+        console.log('%s', row[1]);
       }
     }
   });
 }
+
+module.exports = {
+  readSheet : readSheet
+};
