@@ -69,7 +69,7 @@ module.exports = {
                             offset : 1,
                             query  : parameters.query_sheet2
                         }, function(err, dataSheet2){
-                            dataSheet2[0].clientstatus = 'running';
+                            dataSheet2[0].clientstatus = parameters.clientStatus;
                             dataSheet2[0].runningeaname = parameters.eaname;
                             dataSheet2[0].save();
                             resolve();
